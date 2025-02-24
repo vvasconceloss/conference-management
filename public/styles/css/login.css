@@ -1,21 +1,17 @@
+
 .form {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding-left: 2em;
     padding-right: 2em;
-    padding-bottom: 0.4em;
-    background-color: #171717;
+    padding-bottom: 2em;
+    background-color: #1A1A1A ;
     border-radius: 25px;
     transition: .4s ease-in-out;
   }
   
-  .form:hover {
-    transform: scale(1.05);
-    border: 1px solid black;
-  }
-  
-  #heading {
+   #heading {
     text-align: center;
     margin: 2em;
     color: rgb(255, 255, 255);
@@ -71,7 +67,7 @@
   }
   
   .button1:hover {
-    background-color: black;
+    background-color: #8C2020;
     color: white;
   }
   
@@ -88,7 +84,7 @@
   }
   
   .button2:hover {
-    background-color: black;
+    background-color: #8C2020;
     color: white;
   }
   

@@ -6,7 +6,7 @@
     <title>Inovatech | Iniciar Sessão</title>
   </head>
   <body>
-  <form class="form">
+<form class="form">
     <p id="heading">Login</p>
     <div class="field">
     <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -22,9 +22,8 @@
     </div>
     <div class="btn">
     <button class="button1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-    <button class="button2">Sign Up</button>
+    <button class="button2">Criar Conta</button>
     </div>
-    <button class="button3">Forgot Password</button>
-</form>
+   </form>
   </body>
 </html>
