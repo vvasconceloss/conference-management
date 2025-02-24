@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+  --red_one: #D92929;
+  --red_two: #8C2020;
+  --red_thr: #591C1C;
+
+  --gray_one: #BFBFBF;
+  
+  --black_one: #0D0D0D;
+  --black_two: #1A1A1A;
+}

@@ -1,0 +1,51 @@
+.header {
+  padding: 0 1.0rem;
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+}
+
+.header-nav-links,
+.header-nav-buttons {
+  margin: 0 0.5rem;
+}
+
+.header-nav-links a {
+  padding: 0.4rem ;
+  margin: 0 0.5rem;
+
+  text-decoration: none;
+}
+
+.header-nav-buttons a { text-decoration: none; }
+
+.header-nav-buttons button {
+  width: 6.5rem;
+  padding: 0.4rem;
+
+  cursor: pointer;
+
+  transition: .5s ease all;
+
+  border-radius: 0.3rem;
+}
+
+.header-logo {
+  width: 10rem;
+  height: full;
+  position: relative;
+}
+
+.logo-image {
+  width: 10rem;
+  height: 6.5rem;
+
+  object-fit: contain;
+}
