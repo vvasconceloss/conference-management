@@ -16,7 +16,6 @@
   --black_two: #1A1A1A;
 }
 
-/* ESTILOS GERAIS */
 .header {
   padding: 0 1.0rem;
 
@@ -24,6 +23,8 @@
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
+
+  border-bottom: 0.1rem solid #0d0d0d1a;
 }
 
 .header-nav {
@@ -32,16 +33,18 @@
 }
 
 .header-nav-links,
-.header-nav-buttons {
-  margin: 0 0.5rem;
-}
+.header-nav-buttons { margin: 0 0.5rem; }
 
-.header-nav-links a {
-  padding: 0.4rem ;
+.nav-link {
+  padding: 0.4rem;
   margin: 0 0.5rem;
 
   text-decoration: none;
+  color: var(--black_one);
+  transition: .5s ease all;
 }
+
+.nav-link:hover { color: var(--red_one); }
 
 .header-nav-buttons a { text-decoration: none; }
 
@@ -50,10 +53,32 @@
   padding: 0.4rem;
 
   cursor: pointer;
-
   transition: .5s ease all;
 
   border-radius: 0.3rem;
+  border: 0.1rem solid transparent;
+}
+
+#signin {
+  color: #FFFFFF;
+  background-color: var(--red_one);
+  border: 1px solid var(--red_one);
+}
+
+#signin:hover {
+  background-color: var(--red_thr);
+  border: 1px solid var(--red_thr);
+}
+
+#signup {
+  color: var(--red_one);
+  background-color: #F2F2F2;
+  border: 1px solid var(--red_one);
+}
+
+#signup:hover {
+  color: #FFFFFF;
+  background-color: var(--red_one);
 }
 
 .header-logo {
@@ -88,4 +113,7 @@
 .footer-copyright a {
   color: var(--red_one);
   text-decoration: none;
+  transition: .5s ease all;
 }
+
+.footer-copyright a:hover { color: var(--red_thr); }
