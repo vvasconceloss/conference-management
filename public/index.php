@@ -19,10 +19,10 @@
       </div>
       <div class="header-nav-buttons">
         <a href="./pages/login.php">
-          <button>Iniciar Sessão</button>
+          <button id="signin">Iniciar Sessão</button>
         </a>
         <a href="./pages/register.php">
-          <button>Criar Conta</button>
+          <button id="signup">Criar Conta</button>
         </a>
       </div>
     </nav>  
@@ -30,11 +30,11 @@
   <main class="main">
     <section class="main-section">
       <h2 class="section-1-subtitle">InovaTech: Fazemos a diferença</h2>
-      <h1 class="section-1-title">Gesto de Conferências</h1>
+      <h1 class="section-1-title">Gestor de Conferências</h1>
     </section>
   </main>
   <footer class="footer">
-    <h3 class="footer-copyright">copyright &copy; 2025 <a href="https://github.com/vvasconceloss" target="_blank">Victor Vasconcelos</a> and <a href="#" target="_blank">Juan Garcia</a></h3>
+    <h3 class="footer-copyright">copyright &copy; 2025 <a href="https://github.com/vvasconceloss" target="_blank">Victor Vasconcelos</a> and <a href="https://github.com/JLGG2007" target="_blank">Juan Garcia</a></h3>
     <h3 class="footer-copyright">Escola Secundária de Santo André - Gestão e Programação de Sistemas de Informação</h3>
   </footer>
 </body>
