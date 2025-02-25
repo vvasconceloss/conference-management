@@ -1,0 +1,106 @@
+.main {
+  padding: 1.5rem;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main-section-register {
+  width: 45rem;
+  margin-top: 5.0rem;
+  padding: 1.5rem 1.0rem;
+
+  border-radius: 0.5rem;
+  background-color: #F2F2F2;
+  border: 1px solid var(--gray_one);
+}
+
+.form-register {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.section-register-title {
+  padding-left: 0.5rem;
+  font-size: 1.5rem;
+
+  border-left: 0.2rem solid var(--red_one);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.6em;
+  margin-bottom: 1.5rem;
+
+  color: var(--black_one);
+  transition: .5s ease all;
+
+  outline: none;
+  border-radius: 0.5rem;
+  background-color: #F2F2F2;
+  border: 1px solid var(--gray_one);;
+}
+
+.input-icon {
+  width: 1.3rem;
+  height: 1.3rem;
+
+  fill: var(--black_one);
+}
+
+.input-field {
+  width: 100%;
+
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--black_one);
+}
+
+.form-register .section-register-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.button-register {
+  padding: 0.5em;
+  margin-top: 1.5rem;
+
+  cursor: pointer;
+  color: #FFFFFF;
+  font-size: 1.1rem;
+
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+  transition: .4s ease-in-out;
+  background-color: var(--red_one);
+}
+
+.button-register:hover { background-color: var(--red_two); }
+
+.login-text {
+  font-size: 1.0rem;
+  font-weight: normal;
+}
+
+.login-text a {
+  text-decoration: none;
+  color: var(--red_one);
+
+  transition: .5s ease all;
+}
+
+.login-text a:hover {
+  color: var(--red_two)
+}
