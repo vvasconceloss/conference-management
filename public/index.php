@@ -14,14 +14,14 @@
     </div>
     <nav class="header-nav">
       <div class="header-nav-links">
-        <a href="./index.html" class="nav-link">Início</a>
+        <a href="./index.php" class="nav-link">Início</a>
         <a href="./pages/protected/conferencias.php" class="nav-link">Conferências</a>
       </div>
       <div class="header-nav-buttons">
-        <a href="./pages/login.html">
+        <a href="./pages/login.php">
           <button id="signin">Iniciar Sessão</button>
         </a>
-        <a href="./pages/register.html">
+        <a href="./pages/register.php">
           <button id="signup">Criar Conta</button>
         </a>
       </div>
