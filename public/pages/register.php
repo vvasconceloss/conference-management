@@ -57,7 +57,7 @@
           </div>
           <button class="button-register" type="submit">Criar Conta</button>
         </form>
-        <h3 class="login-text">Já tem uma conta? <a href="./login.html">Inicie sua sessão</a></h3>
+        <h3 class="login-text">Já tem uma conta? <a href="./login.php">Inicie sua sessão</a></h3>
       </section>
     </main>
   </body>
