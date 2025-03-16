@@ -22,7 +22,7 @@
     $sqlCheckUser = "SELECT id FROM utilizadores WHERE email = '$emailParticipante'";
     $result = mysqli_query($connectionDB, $sqlCheckUser);
     if (mysqli_num_rows($result) > 0) {
-        header("Location: ../../index.html");
+        header("Location: ../../index.php");
         exit();
     }
 
@@ -31,7 +31,7 @@
     $sqlQuery = "INSERT INTO utilizadores (nome, email, pass) VALUES ('$nomeParticipante', '$emailParticipante', '$passwordHash')";
 
     if (mysqli_query($connectionDB, $sqlQuery)) {
-        header("Location: ../../pages/login.html");
+        header("Location: ../../pages/login.php");
         exit();
     } else {
         echo "Erro ao efetuar o registo do utilizador: " . mysqli_error($connectionDB);

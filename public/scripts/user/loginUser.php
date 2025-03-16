@@ -26,7 +26,7 @@
 
             setcookie("user_login", $utilizador['email'], time() + (86400 * 30), "/");
 
-            header("Location: ../../index.html");
+            header("Location: ../../index.php");
             exit();
         } else {
             echo "<script>alert('E-mail ou senha incorretos!'); window.location.href='../../entrar.html';</script>";
