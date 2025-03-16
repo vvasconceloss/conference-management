@@ -16,7 +16,7 @@
     $email = mysqli_real_escape_string($connectionDB, trim($_POST['email']));
     $password = $_POST['password'];
 
-    $query = "SELECT id, email, pass, isAdmin FROM utilizadores WHERE email = '$email'";
+    $query = "SELECT id, nome, email, pass, isAdmin FROM utilizadores WHERE email = '$email'";
     $resultado = mysqli_query($connectionDB, $query);
 
     if ($resultado && mysqli_num_rows($resultado) > 0) {
@@ -24,6 +24,7 @@
         
         if (password_verify($password, $utilizador['pass'])) {
             $_SESSION['user_id'] = $utilizador['id'];
+            $_SESSION['user_name'] = $utilizador['nome'];
             $_SESSION['user_login'] = $utilizador['email'];
 
             if ($utilizador['isAdmin'] == 1) {

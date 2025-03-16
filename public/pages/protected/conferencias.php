@@ -3,6 +3,11 @@
   
   include("../../../config/databaseConnection.php");
 
+  $userLogin = $_SESSION['user_login'] ?? '';
+  $userName = $_SESSION['user_name'] ?? 'username';
+  $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true;
+  $isLoggedIn = isset($_SESSION['user_login']) || isset($_COOKIE['user_login']);
+
   $queryUltimaConferencia = "SELECT data FROM conferencias ORDER BY data DESC LIMIT 1";
   $resultUltimaConferencia = mysqli_query($connectionDB, $queryUltimaConferencia);
   $ultimaConferencia = mysqli_fetch_assoc($resultUltimaConferencia);
@@ -18,9 +23,6 @@
 
   $query = "SELECT * FROM conferencias ORDER BY data ASC";
   $result = mysqli_query($connectionDB, $query);
-
-  $isLoggedIn = isset($_SESSION['user_login']) || isset($_COOKIE['user_login']);
-  $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true;
 
   $conferenciasDaSemana = [];
   $conferenciasPorSemana = [];
@@ -66,13 +68,17 @@
       </div>
       <div class="header-nav-buttons">
         <?php if ($isLoggedIn): ?>
-          <a href="./profile.php" class="profile-link">
-            <img 
-              src="<?php echo !empty($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : '../../images/default_profile.jpg'; ?>" 
-              alt="Foto de Perfil" 
-              class="profile-image"
-            >
-          </a>
+          <div class="header-nav-buttons">
+            <div class="profile-dropdown">
+              <button class="profile-button">
+                <span class="profile-initial"><?php echo strtoupper(substr($userName, 0, 1)); ?></span>
+              </button>
+              <div class="dropdown-content">
+                <a href="./profile.php" class="dropdown-link">Perfil</a>
+                <a href="../../scripts/user/logoutUser.php" class="dropdown-link">Terminar Sessão</a>
+              </div>
+            </div>
+          </div>
         <?php else: ?>
           <a href="../login.php">
             <button id="signin">Iniciar Sessão</button>

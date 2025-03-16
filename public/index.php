@@ -1,8 +1,10 @@
 <?php
   session_start();
-    
-  $isLoggedIn = isset($_SESSION['user_login']) || isset($_COOKIE['user_login']);
+
+  $userLogin = $_SESSION['user_login'] ?? '';
+  $userName = $_SESSION['user_name'] ?? 'username';
   $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true;
+  $isLoggedIn = isset($_SESSION['user_login']) || isset($_COOKIE['user_login']);
 ?>
 
 <!DOCTYPE html>
@@ -24,18 +26,22 @@
         <a href="./index.php" class="nav-link">Início</a>
         <a href="./pages/protected/conferencias.php" class="nav-link">Conferências</a>
         <?php if ($isAdmin): ?>
-          <a href="./pages/protected/admin.php" class="nav-link">Administração</a>
+          <a href="./admin.php" class="nav-link">Administração</a>
         <?php endif; ?>
       </div>
       <div class="header-nav-buttons">
         <?php if ($isLoggedIn): ?>
-          <a href="./pages/protected/profile.php" class="profile-link">
-            <img 
-              src="<?php echo !empty($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : './images/default_profile.jpg'; ?>" 
-              alt="Foto de Perfil" 
-              class="profile-image"
-            >
-          </a>
+          <div class="header-nav-buttons">
+            <div class="profile-dropdown">
+              <button class="profile-button">
+                <span class="profile-initial"><?php echo strtoupper(substr($userName, 0, 1)); ?></span>
+              </button>
+              <div class="dropdown-content">
+                <a href="./pages/protected/profile.php" class="dropdown-link">Perfil</a>
+                <a href="./scripts/user/logoutUser.php" class="dropdown-link">Terminar Sessão</a>
+              </div>
+            </div>
+          </div>
         <?php else: ?>
           <a href="./pages/login.php">
             <button id="signin">Iniciar Sessão</button>

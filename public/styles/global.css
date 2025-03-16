@@ -94,24 +94,55 @@
   object-fit: contain;
 }
 
-.profile-link {
-  width: 2.5rem;
-  height: 2.5rem;
-  display: inline-block;
-  border-radius: 50%;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.profile-button {
+  padding: 0;
 
-  border: 0.1rem solid var(--gray_one);
+  border: none;
+  cursor: pointer;
+  background: none;
 }
 
-.profile-link:hover { border: 0.1rem solid var(--red_one); }
+.profile-initial {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-.profile-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2rem;
+
   border-radius: 50%;
+  background-color: var(--red_one);
+}
+
+.dropdown-content {
+  right: 0;
+  width: 15rem;
+  display: none;
+  position: absolute;
+  
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
+  z-index: 100;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.profile-dropdown:hover .dropdown-content {
+  display: block;
 }
 
 .footer {
