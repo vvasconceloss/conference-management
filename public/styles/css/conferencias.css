@@ -1,0 +1,112 @@
+main {
+  margin: 0 auto;
+  padding: 5.0rem 2.0rem;
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+
+  font-size: 2.5rem;
+  text-align: center;
+  color: var(--red_one);
+}
+
+.filtro-semana {
+  margin-bottom: 2.5rem;
+
+  text-align: center;
+}
+
+.filtro-semana label {
+  font-size: 1.2rem;
+  color: var(--red_two);
+}
+
+.filtro-semana select {
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+
+  font-size: 1.2rem;
+  
+  border-radius: 0.5rem;
+}
+
+.conferencias-container {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1.0rem;
+}
+
+.conferencia-card {
+  display: flex;
+  align-items: center;
+
+  gap: 1.0rem;
+  padding: 1.0rem;
+
+  cursor: pointer;
+  transition: .5s ease all;
+
+  border-radius: 0.5rem;
+  background-color: #FFFFFF;
+  border: 0.1rem solid rgba(0, 0, 0, 0.100);
+}
+
+.conferencia-card:hover {
+  transform: translateY(-5px);
+
+  border: 0.1rem solid var(--red_one);
+}
+
+.conferencia-info {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  gap: 0.5rem;
+  min-width: 10rem;
+}
+
+.conferencia-data {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.conferencia-data .data {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--red_two);
+}
+
+.conferencia-data .hora {
+  font-size: 1.1rem;
+  color: var(--red_thr);
+}
+
+.conferencia-duracao {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.conferencia-detalhes { flex: 1; }
+
+.conferencia-detalhes h2 {
+  margin-bottom: 0.5rem;
+
+  font-size: 1.5rem;
+  color: var(--red_one);
+}
+
+.conferencia-detalhes p {
+  font-size: 1.0rem;
+  line-height: 1.5;
+}
+
+.sem-conferencias {
+  margin-bottom: 0.5rem;
+
+  font-size: 1.2rem;
+  text-align: center;
+}
