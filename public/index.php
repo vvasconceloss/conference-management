@@ -1,3 +1,10 @@
+<?php
+  session_start();
+    
+  $isLoggedIn = isset($_SESSION['user_login']) || isset($_COOKIE['user_login']);
+  $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true;
+?>
+
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
@@ -16,14 +23,27 @@
       <div class="header-nav-links">
         <a href="./index.php" class="nav-link">Início</a>
         <a href="./pages/protected/conferencias.php" class="nav-link">Conferências</a>
+        <?php if ($isAdmin): ?>
+          <a href="./pages/protected/admin.php" class="nav-link">Administração</a>
+        <?php endif; ?>
       </div>
       <div class="header-nav-buttons">
-        <a href="./pages/login.php">
-          <button id="signin">Iniciar Sessão</button>
-        </a>
-        <a href="./pages/register.php">
-          <button id="signup">Criar Conta</button>
-        </a>
+        <?php if ($isLoggedIn): ?>
+          <a href="./pages/protected/profile.php" class="profile-link">
+            <img 
+              src="<?php echo !empty($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : './images/default_profile.jpg'; ?>" 
+              alt="Foto de Perfil" 
+              class="profile-image"
+            >
+          </a>
+        <?php else: ?>
+          <a href="./pages/login.php">
+            <button id="signin">Iniciar Sessão</button>
+          </a>
+          <a href="./pages/register.php">
+            <button id="signup">Criar Conta</button>
+          </a>
+        <?php endif; ?>
       </div>
     </nav>  
   </header>

@@ -1,3 +1,8 @@
+<?php
+  session_start();
+  $isLoggedIn = isset($_SESSION['user_login']) || isset($_COOKIE['user_login']);
+?>
+
 <!DOCTYPE html>
 <html lang="pt-PT">
   <head>
@@ -18,12 +23,22 @@
           <a href="../pages/protected/conferencias.php" class="nav-link">Conferências</a>
         </div>
         <div class="header-nav-buttons">
-          <a href="./login.php">
-            <button id="signin">Iniciar Sessão</button>
-          </a>
-          <a href="./register.php">
-            <button id="signup">Criar Conta</button>
-          </a>
+          <?php if ($isLoggedIn): ?>
+            <a href="../pages/protected/profile.php" class="profile-link">
+              <img 
+                src="<?php echo !empty($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : '../images/default_profile.jpg'; ?>" 
+                alt="Foto de Perfil" 
+                class="profile-image"
+              >
+            </a>
+          <?php else: ?>
+            <a href="./login.php">
+              <button id="signin">Iniciar Sessão</button>
+            </a>
+            <a href="./register.php">
+              <button id="signup">Criar Conta</button>
+            </a>
+          <?php endif; ?>
         </div>
       </nav>  
     </header>
