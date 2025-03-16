@@ -26,7 +26,7 @@
         <a href="./index.php" class="nav-link">Início</a>
         <a href="./pages/protected/conferencias.php" class="nav-link">Conferências</a>
         <?php if ($isAdmin): ?>
-          <a href="./admin.php" class="nav-link">Administração</a>
+          <a href="./pages/protected/admin.php" class="nav-link">Administração</a>
         <?php endif; ?>
       </div>
       <div class="header-nav-buttons">
