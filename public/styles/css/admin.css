@@ -1,0 +1,58 @@
+.admin-main { padding: 2.5rem; }
+
+.admin-overview {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.admin-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+
+  color: var(--red_one);
+}
+
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.admin-card {
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+
+  background-color: #ffffff;
+  border: 0.1rem solid rgba(0, 0, 0, 0.100);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.card-value {
+  font-size: 2rem;
+  color: var(--red_one);
+  margin: 1rem 0;
+}
+
+.card-button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  transition: .5s ease all;
+  background-color: var(--red_one);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.card-button:hover {
+  transition: .5s ease all;
+  background-color: var(--red_two);
+}
