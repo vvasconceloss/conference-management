@@ -13,6 +13,22 @@
       header("Location: ../login.php");
       exit();
   }
+
+  if ($stmt = mysqli_prepare($connectionDB, "SELECT nome, email FROM usuarios WHERE login = ? LIMIT 1")) {
+      mysqli_stmt_bind_param($stmt, 's', $userLogin);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
+      
+      if ($row = mysqli_fetch_assoc($result)) {
+          $userName = $row['nome'];
+          $userLogin = $row['email'];
+      } else {
+          die("Erro: Usuário não encontrado.");
+      }
+      mysqli_stmt_close($stmt);
+  } else {
+      die("Erro ao recuperar dados do usuário.");
+  }
 ?>
 
 <!DOCTYPE html>

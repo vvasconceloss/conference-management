@@ -14,13 +14,25 @@
   $userLogin = $_SESSION['user_login'] ?? '';
   $userName = $_SESSION['user_name'] ?? 'Admin';
 
-  $queryUsers = "SELECT COUNT(*) as total_users FROM utilizadores";
-  $resultUsers = mysqli_query($connectionDB, $queryUsers);
-  $totalUsers = mysqli_fetch_assoc($resultUsers)['total_users'];
+  $queryUsers = "SELECT COUNT(*) as total_users FROM utilizador";
+  if ($stmt = mysqli_prepare($connectionDB, $queryUsers)) {
+      mysqli_stmt_execute($stmt);
+      $resultUsers = mysqli_stmt_get_result($stmt);
+      $totalUsers = mysqli_fetch_assoc($resultUsers)['total_users'];
+      mysqli_stmt_close($stmt);
+  } else {
+      die("Erro ao obter dados de utilizadores.");
+  }
 
-  $queryConferences = "SELECT COUNT(*) as total_conferences FROM conferencias";
-  $resultConferences = mysqli_query($connectionDB, $queryConferences);
-  $totalConferences = mysqli_fetch_assoc($resultConferences)['total_conferences'];
+  $queryConferences = "SELECT COUNT(*) as total_conferences FROM conferencia";
+  if ($stmt = mysqli_prepare($connectionDB, $queryConferences)) {
+      mysqli_stmt_execute($stmt);
+      $resultConferences = mysqli_stmt_get_result($stmt);
+      $totalConferences = mysqli_fetch_assoc($resultConferences)['total_conferences'];
+      mysqli_stmt_close($stmt);
+  } else {
+      die("Erro ao obter dados de conferências.");
+  }
 ?>
 
 <!DOCTYPE html>

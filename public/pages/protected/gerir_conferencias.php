@@ -1,6 +1,6 @@
 <?php
   session_start();
-  
+
   include("../../../config/databaseConnection.php");
 
   $userLogin = $_SESSION['user_login'] ?? '';
@@ -8,9 +8,15 @@
   $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true;
   $isLoggedIn = isset($_SESSION['user_login']) || isset($_COOKIE['user_login']);
 
-  $queryUltimaConferencia = "SELECT data FROM conferencias ORDER BY data DESC LIMIT 1";
-  $resultUltimaConferencia = mysqli_query($connectionDB, $queryUltimaConferencia);
-  $ultimaConferencia = mysqli_fetch_assoc($resultUltimaConferencia);
+  $queryUltimaConferencia = "SELECT data FROM conferencia ORDER BY data DESC LIMIT 1";
+  if ($stmt = mysqli_prepare($connectionDB, $queryUltimaConferencia)) {
+      mysqli_stmt_execute($stmt);
+      $resultUltimaConferencia = mysqli_stmt_get_result($stmt);
+      $ultimaConferencia = mysqli_fetch_assoc($resultUltimaConferencia);
+      mysqli_stmt_close($stmt);
+  } else {
+      die("Erro ao obter a última conferência.");
+  }
 
   $semanaSelecionada = isset($_GET['semana']) ? $_GET['semana'] : ($ultimaConferencia ? $ultimaConferencia['data'] : date('Y-m-d'));
   $dataSelecionada = new DateTime($semanaSelecionada);
@@ -21,26 +27,32 @@
   $fimSemana = clone $inicioSemana;
   $fimSemana->modify('Sunday this week');
 
-  $query = "SELECT * FROM conferencias ORDER BY data ASC";
-  $totalConferencias = mysqli_query($connectionDB, $query);
+  $query = "SELECT * FROM conferencia ORDER BY data ASC";
+  if ($stmt = mysqli_prepare($connectionDB, $query)) {
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
 
-  $conferenciasDaSemana = [];
-  $conferenciasPorSemana = [];
+      $conferenciasDaSemana = [];
+      $conferenciasPorSemana = [];
 
-  while ($row = mysqli_fetch_assoc($totalConferencias)) {
-    $dataConferencia = new DateTime($row['data']);
+      while ($row = mysqli_fetch_assoc($result)) {
+          $dataConferencia = new DateTime($row['data']);
 
-    $inicioSemanaConferencia = clone $dataConferencia;
-    $inicioSemanaConferencia->modify('Monday this week');
-    $fimSemanaConferencia = clone $inicioSemanaConferencia;
-    $fimSemanaConferencia->modify('Sunday this week');
+          $inicioSemanaConferencia = clone $dataConferencia;
+          $inicioSemanaConferencia->modify('Monday this week');
+          $fimSemanaConferencia = clone $inicioSemanaConferencia;
+          $fimSemanaConferencia->modify('Sunday this week');
 
-    $intervaloSemana = $inicioSemanaConferencia->format('Y-m-d') . ' a ' . $fimSemanaConferencia->format('Y-m-d');
-    $conferenciasPorSemana[$intervaloSemana][] = $row;
+          $intervaloSemana = $inicioSemanaConferencia->format('Y-m-d') . ' a ' . $fimSemanaConferencia->format('Y-m-d');
+          $conferenciasPorSemana[$intervaloSemana][] = $row;
 
-    if ($dataConferencia >= $inicioSemana && $dataConferencia <= $fimSemana) {
-      $conferenciasDaSemana[] = $row;
-    }
+          if ($dataConferencia >= $inicioSemana && $dataConferencia <= $fimSemana) {
+              $conferenciasDaSemana[] = $row;
+          }
+      }
+      mysqli_stmt_close($stmt);
+  } else {
+      die("Erro ao obter as conferências.");
   }
 ?>
 
@@ -91,7 +103,7 @@
     </nav>  
   </header>
   <main>
-    <h1><?php echo mysqli_num_rows($totalConferencias); ?> Conferências</h1>
+    <h1><?php echo mysqli_num_rows($result); ?> Conferências</h1>
     <div class="filtro-semana">
       <form method="GET" action="" id="filtroForm">
         <label for="semana">Selecione a semana:</label>
