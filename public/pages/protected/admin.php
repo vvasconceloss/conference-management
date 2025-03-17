@@ -33,6 +33,14 @@
   } else {
       die("Erro ao obter dados de conferências.");
   }
+
+  $queryCount = "SELECT COUNT(*) as total_viagens FROM utilizador 
+  LEFT JOIN viagem ON utilizador.viagem_id = viagem.id
+  LEFT JOIN deslocamento ON utilizador.id = deslocamento.utilizador_id
+  WHERE deslocamento.contribuidor IS NOT NULL";
+  $resultCount = mysqli_query($connectionDB, $queryCount);
+  $rowCount = mysqli_fetch_assoc($resultCount);
+  $totalViagens = $rowCount['total_viagens'];
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +92,7 @@
         </div>
         <div class="admin-card">
           <h2 class="card-title">Viagens</h2>
-          <p class="card-value">0</p>
+          <p class="card-value"><?php echo $totalViagens; ?></p>
           <a href="./gerir_viagens.php" class="card-button">Gerir Viagens</a>
         </div>
       </div>

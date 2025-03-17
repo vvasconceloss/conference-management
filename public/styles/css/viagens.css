@@ -1,0 +1,85 @@
+main {
+  margin: 0 auto;
+  padding: 5.0rem 2.0rem;
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
+  text-align: center;
+  color: var(--red_one);
+}
+
+#search {
+  width: 100%;
+  display: block;
+  padding: 0.5rem;
+  max-width: 50rem;
+  margin: 0 auto 2.0rem;
+  font-size: 1.2rem;
+  outline: none;
+  border-radius: 0.5rem;
+  border: 0.1rem solid rgba(0, 0, 0, 0.100);
+}
+
+table {
+  width: 100%;
+  border-radius: 0.5rem;
+  border-collapse: collapse;
+  background-color: #FFFFFF;
+  border: 0.1rem solid rgba(0, 0, 0, 0.100);
+}
+
+th, td {
+  padding: 1.0rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+th {
+  color: #FFFFFF;
+  font-size: 1.2rem;
+  background-color: var(--red_one);
+}
+
+td { font-size: 1.1rem; }
+
+tr:nth-child(even) { background-color: #f9f9f9; }
+
+td a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0 0.3rem;
+  text-decoration: none;
+  color: #FFFFFF;
+  font-size: 1rem;
+  transition: 0.3s ease all;
+  border-radius: 0.5rem;
+}
+
+td a:nth-child(1) {
+  background-color: var(--red_one);
+}
+
+td a:nth-child(1):hover {
+  background-color: var(--red_thr);
+}
+
+td a:nth-child(2) {
+  background-color: var(--red_one);
+}
+
+td a:nth-child(2):hover {
+  background-color: darkred;
+}
+
+.sem-viagem {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.sem-viagem-acoes { color: #9e9e9e; }
+
+main .deslocamentos-section{
+  margin: 5.0rem 0;
+}
