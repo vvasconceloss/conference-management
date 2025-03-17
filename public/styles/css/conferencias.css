@@ -127,3 +127,38 @@ hr { margin: 0.5rem 0; }
 }
 
 .btn-conferencia-action:hover { background-color: var(--red_two); }
+
+.section-button-create { margin-bottom: 1.0rem; }
+
+.botao-criar {
+  width: 10rem;
+  padding: 0.5rem;
+
+  cursor: pointer;
+  color: #FFFFFF;
+  transition: .5s ease all;
+
+  border-radius: 0.5rem;
+  background-color: var(--red_one);
+  border: 0.1rem solid rgba(0, 0, 0, 0.100);
+}
+
+.botao-criar:hover { background-color: var(--red_two); }
+
+.botoes-admin a { text-decoration: none; }
+
+.botoes-admin a button {
+  width: 5.0rem;
+  padding: 0.5rem;
+
+  cursor: pointer;
+  color: #FFFFFF;
+  text-align: center;
+  transition: .5s ease all;
+
+  border-radius: 0.5rem;
+  background-color: var(--red_one);
+  border: 0.1rem solid rgba(0, 0, 0, 0.100);
+}
+
+.botoes-admin a button:hover { background-color: var(--red_two); }
