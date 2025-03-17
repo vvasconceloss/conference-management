@@ -64,7 +64,7 @@
   <link rel="stylesheet" href="../../styles/global.css">
   <link rel="stylesheet" href="../../styles/css/conferencias.css">
   <script src="https://kit.fontawesome.com/15df1461d5.js" crossorigin="anonymous"></script>
-  <title>Inovatech | Gerir Conferências</title>
+  <title>Inovatech | Conferências</title>
 </head>
 <body>
   <header class="header">
