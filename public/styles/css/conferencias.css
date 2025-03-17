@@ -110,3 +110,20 @@ h1 {
   font-size: 1.2rem;
   text-align: center;
 }
+
+hr { margin: 0.5rem 0; }
+
+.btn-conferencia-action {
+  width: 4.0rem;
+  padding: 0.5rem;
+
+  cursor: pointer;
+  color: #FFFFFF;
+  transition: .5s ease all;
+
+  border-radius: 0.5rem;
+  background-color: var(--red_one);
+  border: 0.1rem solid rgba(0, 0, 0, 0.100);
+}
+
+.btn-conferencia-action:hover { background-color: var(--red_two); }
