@@ -18,16 +18,31 @@
       die("Erro ao obter a última conferência.");
   }
 
-  $semanaSelecionada = isset($_GET['semana']) ? $_GET['semana'] : ($ultimaConferencia ? $ultimaConferencia['data'] : date('Y-m-d'));
-  $dataSelecionada = new DateTime($semanaSelecionada);
+  $queryCategorias = "SELECT * FROM categoria";
+  $resultCategorias = mysqli_query($connectionDB, $queryCategorias);
+  $categorias = mysqli_fetch_all($resultCategorias, MYSQLI_ASSOC);
 
+  $semanaSelecionada = isset($_GET['semana']) ? $_GET['semana'] : ($ultimaConferencia ? $ultimaConferencia['data'] : date('Y-m-d'));
+  $categoriaSelecionada = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+
+  $dataSelecionada = new DateTime($semanaSelecionada);
   $inicioSemana = clone $dataSelecionada;
   $inicioSemana->modify('Monday this week');
-
   $fimSemana = clone $inicioSemana;
   $fimSemana->modify('Sunday this week');
 
-  $query = "SELECT * FROM conferencia ORDER BY data ASC";
+  $query = "SELECT c.*, cat.titulo AS categoria_titulo 
+            FROM conferencia c
+            LEFT JOIN categoria_has_conferencia chc ON c.id = chc.conferencia_id
+            LEFT JOIN categoria cat ON chc.categoria_id = cat.id
+            WHERE 1=1";
+
+  if (!empty($categoriaSelecionada)) {
+      $query .= " AND cat.id = '$categoriaSelecionada'";
+  }
+
+  $query .= " ORDER BY c.data ASC";
+
   if ($stmt = mysqli_prepare($connectionDB, $query)) {
       mysqli_stmt_execute($stmt);
       $result = mysqli_stmt_get_result($stmt);
@@ -143,6 +158,9 @@
               </div>
             </div>
             <div class="conferencia-detalhes">
+              <?php if (!empty($row['categoria_titulo'])): ?>
+                <p><?php echo htmlspecialchars($row['categoria_titulo']); ?></p>
+              <?php endif; ?>
               <h2><?php echo htmlspecialchars($row['titulo']); ?></h2>
               <p><?php echo htmlspecialchars($row['descricao']); ?></p>
             </div>
