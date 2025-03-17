@@ -70,6 +70,14 @@
             </svg>
             <input placeholder="Confirmar Password" name="confirmar" class="input-field" type="password">
           </div>
+          <div class="checkbox-field">
+            <input type="checkbox" id="estrangeiro" name="estrangeiro">
+            <label for="estrangeiro">Estrangeiro</label>
+          </div>
+          <div class="checkbox-field">
+            <input type="checkbox" id="orador" name="orador">
+            <label for="orador">Orador</label>
+          </div>
           <button class="button-register" type="submit">Criar Conta</button>
         </form>
         <h3 class="login-text">Já tem uma conta? <a href="./login.php">Inicie sua sessão</a></h3>

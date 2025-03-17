@@ -63,6 +63,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../styles/global.css">
   <link rel="stylesheet" href="../../styles/css/conferencias.css">
+  <script src="https://kit.fontawesome.com/15df1461d5.js" crossorigin="anonymous"></script>
   <title>Inovatech | Gerir Conferências</title>
 </head>
 <body>
@@ -170,5 +171,4 @@
       document.getElementById('filtroForm').submit();
   }
 </script>
-<script src="https://kit.fontawesome.com/15df1461d5.js" crossorigin="anonymous"></script>
 </html>

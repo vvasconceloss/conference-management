@@ -16,7 +16,7 @@
         $email = mysqli_real_escape_string($connectionDB, trim($_POST['email']));
         $password = $_POST['password'];
 
-        $query = "SELECT id, nome, email, pass, isAdmin, isParticipante, isEstrangeiro, pais, isOrador FROM utilizador WHERE email = ?";
+        $query = "SELECT id, nome, email, pass, isAdmin, isParticipante, isEstrangeiro, isOrador FROM utilizador WHERE email = ?";
         
         if ($stmt = mysqli_prepare($connectionDB, $query)) {
             mysqli_stmt_bind_param($stmt, "s", $email);
@@ -24,7 +24,7 @@
             mysqli_stmt_store_result($stmt);
 
             if (mysqli_stmt_num_rows($stmt) > 0) {
-                mysqli_stmt_bind_result($stmt, $id, $nome, $emailBD, $passBD, $isAdmin, $isParticipante, $isEstrangeiro, $pais, $isOrador);
+                mysqli_stmt_bind_result($stmt, $id, $nome, $emailBD, $passBD, $isAdmin, $isParticipante, $isEstrangeiro, $isOrador);
                 mysqli_stmt_fetch($stmt);
 
                 if (password_verify($password, $passBD)) {
@@ -38,10 +38,10 @@
                     header("Location: ../../index.php");
                     exit();
                 } else {
-                    echo "<script>alert('E-mail ou senha incorretos!'); window.location.href='../../entrar.html';</script>";
+                    echo "<script>alert('E-mail ou senha incorretos!'); window.location.href='../../index.php';</script>";
                 }
             } else {
-                echo "<script>alert('Utilizador não existe!'); window.location.href='../../entrar.html';</script>";
+                echo "<script>alert('Utilizador não existe!'); window.location.href='../../index.php';</script>";
             }
 
             mysqli_stmt_close($stmt);
