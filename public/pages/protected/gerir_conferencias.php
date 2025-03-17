@@ -18,16 +18,31 @@
       die("Erro ao obter a última conferência.");
   }
 
-  $semanaSelecionada = isset($_GET['semana']) ? $_GET['semana'] : ($ultimaConferencia ? $ultimaConferencia['data'] : date('Y-m-d'));
-  $dataSelecionada = new DateTime($semanaSelecionada);
+  $queryCategorias = "SELECT * FROM categoria";
+  $resultCategorias = mysqli_query($connectionDB, $queryCategorias);
+  $categorias = mysqli_fetch_all($resultCategorias, MYSQLI_ASSOC);
 
+  $semanaSelecionada = isset($_GET['semana']) ? $_GET['semana'] : ($ultimaConferencia ? $ultimaConferencia['data'] : date('Y-m-d'));
+  $categoriaSelecionada = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+
+  $dataSelecionada = new DateTime($semanaSelecionada);
   $inicioSemana = clone $dataSelecionada;
   $inicioSemana->modify('Monday this week');
-
   $fimSemana = clone $inicioSemana;
   $fimSemana->modify('Sunday this week');
 
-  $query = "SELECT * FROM conferencia ORDER BY data ASC";
+  $query = "SELECT c.*, cat.titulo AS categoria_titulo 
+            FROM conferencia c
+            LEFT JOIN categoria_has_conferencia chc ON c.id = chc.conferencia_id
+            LEFT JOIN categoria cat ON chc.categoria_id = cat.id
+            WHERE 1=1";
+
+  if (!empty($categoriaSelecionada)) {
+      $query .= " AND cat.id = '$categoriaSelecionada'";
+  }
+
+  $query .= " ORDER BY c.data ASC";
+
   if ($stmt = mysqli_prepare($connectionDB, $query)) {
       mysqli_stmt_execute($stmt);
       $result = mysqli_stmt_get_result($stmt);
@@ -64,7 +79,7 @@
   <link rel="stylesheet" href="../../styles/global.css">
   <link rel="stylesheet" href="../../styles/css/conferencias.css">
   <script src="https://kit.fontawesome.com/15df1461d5.js" crossorigin="anonymous"></script>
-  <title>Inovatech | Conferências</title>
+  <title>Inovatech | Conferencias</title>
 </head>
 <body>
   <header class="header">
@@ -104,7 +119,7 @@
     </nav>  
   </header>
   <main>
-    <h1><?php echo mysqli_num_rows($result); ?> Conferências</h1>
+    <h1>Conferências da Semana</h1>
     <div class="filtro-semana">
       <form method="GET" action="" id="filtroForm">
         <label for="semana">Selecione a semana:</label>
@@ -119,6 +134,13 @@
         </select>
       </form>
     </div>
+    <section class="section-button-create">
+      <div class="botoes-gerais">
+        <a href="criar_conferencia.php">
+          <button type="button" class="botao-criar">Criar Conferência</button>
+        </a>
+      </div>
+    </section>
     <div class="conferencias-container">
       <?php if (!empty($conferenciasDaSemana)): ?>
         <?php foreach ($conferenciasDaSemana as $row): ?>
@@ -142,33 +164,40 @@
               <div class="conferencia-duracao">
                 <span><?php echo htmlspecialchars($duracaoFormatada); ?> de duração</span>
               </div>
-            </div>
-            <div class="conferencia-detalhes">
-              <div class="conferencia-detalhes-content">
+              </div>
+              <div class="conferencia-detalhes">
+                <?php if (!empty($row['categoria_titulo'])): ?>
+                  <p><?php echo htmlspecialchars($row['categoria_titulo']); ?></p>
+                <?php endif; ?>
                 <h2><?php echo htmlspecialchars($row['titulo']); ?></h2>
                 <p><?php echo htmlspecialchars($row['descricao']); ?></p>
-                <hr>
-                <div class="conferencia-btn">
-                  <button type="button" class="btn-conferencia-action">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                  <button type="button" class="btn-conferencia-action">
-                    <i class="fa-solid fa-pen"></i>
-                  </button>
-                </div>
               </div>
-            </div>
+              <?php if ($isAdmin): ?>
+                <div class="botoes-admin">
+                  <a href="editar_conferencia.php?id=<?php echo $row['id']; ?>">
+                    <button class="botao-editar">
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                  </a>
+                  <a href="apagar_conferencia.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Tem certeza que deseja apagar esta conferência?');">
+                    <button class="botao-apagar">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </a>
+                </div>
+              <?php endif; ?>
           </div>
         <?php endforeach; ?>
       <?php else: ?>
         <p class="sem-conferencias">Nenhuma conferência encontrada para esta semana.</p>
       <?php endif; ?>
     </div>
+  </div>
   </main>
 </body>
 <script>
   function filtrarAutomaticamente() {
-      document.getElementById('filtroForm').submit();
+    document.getElementById('filtroForm').submit();
   }
 </script>
 </html>
