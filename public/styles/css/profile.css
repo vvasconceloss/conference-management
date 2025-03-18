@@ -6,9 +6,8 @@
 
 .profile-section {
   background-color: #ffffff;
-  padding: 2rem;
+  padding: 0 2rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-header {
@@ -87,4 +86,36 @@
 
 .form-button:hover {
   background-color: var(--red_two);
+}
+
+.profile-conferencia {
+  padding: 2rem;
+  margin-top: 1.0rem;
+}
+
+.link-conferencia-profile {
+  color: #0D0D0D;
+  text-decoration: none;
+  transition: .5s ease all;
+}
+
+.link-conferencia-profile:hover {
+  background-color: var(--red_one);
+}
+
+.list-profile { 
+  list-style: none;
+}
+
+.conferencias-list {
+  padding: 0.5rem;
+  
+  transition: .5s ease all;
+
+  border-radius: 0.5rem;
+  border: 0.1rem solid rgba(0, 0, 0, 0.100);
+}
+
+.conferencias-list:hover {
+  border: 0.1rem solid var(--red_one);
 }

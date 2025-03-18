@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./styles/global.css">
   <link rel="stylesheet" href="./styles/css/index.css">
-  <link rel="shortcut icon" href="./images/inovatech_logo.png" type="image/">
+  <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
   <title>Inovatech | Gestão de Conferências</title>
 </head>
 <body>

@@ -41,7 +41,7 @@
 
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-        $hospedagemId = $isEstrangeiro ? 1 : 0;
+        $hospedagemId = $isEstrangeiro ? 1 : 4;
 
         $sqlQuery = "INSERT INTO utilizador (nome, email, pass, isEstrangeiro, hospedagem_id) VALUES (?, ?, ?, ?, ?)";
 

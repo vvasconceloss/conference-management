@@ -109,6 +109,26 @@
         </form>
       </div>
     </section>
+    <section class="profile-conferencia">
+      <h2 class="info-title">Minhas Conferências</h2>
+        <div class="conferencias-list">
+          <?php if (!empty($conferenciasParticipando)): ?>
+              <ul>
+                  <?php foreach ($conferenciasParticipando as $conferencia): ?>
+                      <li>
+                          <a class="link-conferencia-profile" href="detalhes_conferencia.php?id=<?php echo $conferencia['id']; ?>">
+                              <h3><?php echo htmlspecialchars($conferencia['titulo']); ?></h3>
+                              <p><strong>Data:</strong> <?php echo date('d/m/Y', strtotime($conferencia['data'])); ?></p>
+                              <p><?php echo htmlspecialchars($conferencia['descricao']); ?></p>
+                          </a>
+                      </li>
+                  <?php endforeach; ?>
+              </ul>
+          <?php else: ?>
+              <p>Você não está inscrito em nenhuma conferência.</p>
+          <?php endif; ?>
+        </div>
+    </section>
   </main>
 </body>
 </html>

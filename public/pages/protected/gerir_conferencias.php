@@ -146,7 +146,7 @@
                   <a href="./editar_conferencia.php?id=<?php echo $row['info']['id']; ?>">
                     <button><i class="fa-solid fa-pencil"></i></button>
                   </a>
-                  <a href="../../scripts/conferencias/excluirUtilizador.php?id=<?php echo $row['info']['id']; ?>" onclick="return confirmarExclusao();">
+                  <a href="../../scripts/conferencias/excluirConferencia.php?id=<?php echo $row['info']['id']; ?>" onclick="return confirmarExclusao();">
                     <button><i class="fa-solid fa-trash"></i></button>
                   </a>
                 </div>

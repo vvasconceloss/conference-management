@@ -35,15 +35,15 @@
 
       if (mysqli_stmt_affected_rows($stmt) > 0) {
           mysqli_stmt_close($stmt);
-          header("Location: ../../pages/protected/conferencias.php?msg=Conferência+excluída+com+sucesso");
+          header("Location: ../../pages/protected/gerir_conferencias.php?msg=Conferência+excluída+com+sucesso");
           exit();
       } else {
           mysqli_stmt_close($stmt);
-          header("Location: ../../pages/protected/conferencias.php?msg=Erro+ao+excluir+conferência");
+          header("Location: ../../pages/protected/gerir_conferencias.php?msg=Erro+ao+excluir+conferência");
           exit();
       }
   } else {
-      header("Location: ../../pages/protected/conferencias.php?msg=ID+inválido");
+      header("Location: ../../pages/protected/gerir_conferencias.php?msg=ID+inválido");
       exit();
   }
 ?>

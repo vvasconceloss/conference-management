@@ -50,6 +50,25 @@
     }
     mysqli_stmt_close($stmt);
 
+    $queryConferencias = "
+        SELECT c.id, c.titulo, c.data, c.descricao
+        FROM conferencia c
+        JOIN conferencia_has_utilizador chu ON c.id = chu.conferencia_id
+        WHERE chu.utilizador_id = ? 
+        ORDER BY c.data DESC";
+
+    if ($stmtConferencias = mysqli_prepare($connectionDB, $queryConferencias)) {
+        mysqli_stmt_bind_param($stmtConferencias, 'i', $userId);
+        mysqli_stmt_execute($stmtConferencias);
+        $resultConferencias = mysqli_stmt_get_result($stmtConferencias);
+        
+        $conferenciasParticipando = [];
+        while ($rowConferencia = mysqli_fetch_assoc($resultConferencias)) {
+            $conferenciasParticipando[] = $rowConferencia;
+        }
+        mysqli_stmt_close($stmtConferencias);
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = $_POST['name'] ?? $userName;
         $email = $_POST['email'] ?? $userEmail;
@@ -151,6 +170,26 @@
             </form>
         </div>
     </section>
+    <section class="profile-conferencia">
+            <h2 class="info-title">Conferências de <?php echo htmlspecialchars($userName); ?></h2>
+            <div class="conferencias-list">
+                <?php if (!empty($conferenciasParticipando)): ?>
+                    <ul class="list-profile">
+                        <?php foreach ($conferenciasParticipando as $conferencia): ?>
+                            <li>
+                                <a href="detalhes_conferencia.php?id=<?php echo $conferencia['id']; ?>" class="link-conferencia-profile ">
+                                    <h3><?php echo htmlspecialchars($conferencia['titulo']); ?></h3>
+                                    <p><strong>Data:</strong> <?php echo date('d/m/Y', strtotime($conferencia['data'])); ?></p>
+                                    <p><?php echo htmlspecialchars($conferencia['descricao']); ?></p>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php else: ?>
+                    <p><strong><?php echo htmlspecialchars($userName); ?></strong> não está inscrito(a) em nenhuma conferência.</p>
+                <?php endif; ?>
+            </div>
+        </section>
 </main>
 </body>
 </html>

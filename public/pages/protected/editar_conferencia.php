@@ -95,15 +95,15 @@
             mysqli_stmt_close($stmt);
         }
 
-        mysqli_query($connectionDB, "DELETE FROM conferencia_has_participante WHERE conferencia_id = $conferenciaId");
+        mysqli_query($connectionDB, "DELETE FROM conferencia_has_utilizador WHERE conferencia_id = $conferenciaId");
         foreach ($participantesSelecionados as $participanteId) {
-            $stmt = mysqli_prepare($connectionDB, "INSERT INTO conferencia_has_participante (utilizador_id, conferencia_id) VALUES (?, ?)");
+            $stmt = mysqli_prepare($connectionDB, "INSERT INTO conferencia_has_utilizador (utilizador_id, conferencia_id) VALUES (?, ?)");
             mysqli_stmt_bind_param($stmt, "ii", $participanteId, $conferenciaId);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
         }
 
-        header("Location: ./conferencias.php");
+        header("Location: ./detalhes_conferencia.php?id=$conferenciaId");
         exit();
     }
   ?>
@@ -201,7 +201,8 @@
                 <?php endforeach; ?>
                 </select>
               </div>
-              <button type="submit" class="botao-criar">Criar Conferência</button>
+              <button type="submit" class="botao-criar">Editar Conferência</button>
+              <a href="./gerir_conferencias.php" class="btn-cancelar">Cancelar</a>
           </form>
     </main>
   </body>

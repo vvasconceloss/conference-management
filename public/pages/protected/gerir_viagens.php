@@ -31,6 +31,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../styles/global.css">
   <link rel="stylesheet" href="../../styles/css/viagens.css">
+  <link rel="stylesheet" href="../../styles/css/editar_viagem.css">
   <script src="https://kit.fontawesome.com/15df1461d5.js" crossorigin="anonymous"></script>
   <title>Inovatech | Gestão de Viagens</title>
 </head>
@@ -79,8 +80,8 @@
         <tr>
           <th>Nome</th>
           <th>Origem</th>
-          <th>Data de Chegada</th>
           <th>Data de Partida</th>
+          <th>Data de Chegada</th>
           <th>Hospedagem</th>
           <th>Ações</th>
         </tr>
@@ -95,20 +96,20 @@
           <tr class="<?php echo $classeLinha; ?>">
             <td><?php echo htmlspecialchars($row['utilizador_nome']); ?></td>
             <td><?php echo $viagemDefinida ? htmlspecialchars($row['origem']) : '-----'; ?></td>
-            <td><?php echo $viagemDefinida ? date('d-m-Y H:i', strtotime($row['data_chegada'])) : '-----'; ?></td>
             <td><?php echo $viagemDefinida ? date('d-m-Y H:i', strtotime($row['data_partida'])) : '-----'; ?></td>
+            <td><?php echo $viagemDefinida ? date('d-m-Y H:i', strtotime($row['data_chegada'])) : '-----'; ?></td>
             <td><?php echo $hospedagem; ?></td>
             <td>
               <?php if ($viagemDefinida): ?>
                 <a href="editar_viagem.php?id=<?php echo $row['viagem_id']; ?>">
                   <i class="fa-solid fa-pen"></i>
                 </a>
-                <a href="remover_viagem.php?id=<?php echo $row['viagem_id']; ?>" onclick="return confirm('Tem certeza que deseja remover esta viagem?');">
+                <a href="../../scripts/viagens/excluirViagem.php?id=<?php echo $row['viagem_id']; ?>" onclick="return confirm('Tem certeza que deseja remover esta viagem?');">
                   <i class="fa-solid fa-trash"></i>
                 </a>
               <?php else: ?>
                 <span class="sem-viagem-acoes">
-                  <a href="editar_viagem.php?id=<?php echo $row['utilizador_id']; ?>">
+                  <a href="agendar_viagem.php?id=<?php echo $row['utilizador_id']; ?>">
                     <i class="fa-solid fa-plane-departure"></i>
                   </a>
                 </span>
