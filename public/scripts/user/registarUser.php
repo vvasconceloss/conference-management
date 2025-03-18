@@ -12,7 +12,6 @@
         $confirmarPassword = $_POST['confirmar'];
 
         $isEstrangeiro = isset($_POST['estrangeiro']) ? 1 : 0;
-        $isOrador = isset($_POST['orador']) ? 1 : 0;
 
         if (empty($password) || empty($confirmarPassword)) {
             die("As senhas não podem estar vazias.");
@@ -42,10 +41,12 @@
 
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-        $sqlQuery = "INSERT INTO utilizador (nome, email, pass, isEstrangeiro, isOrador) VALUES (?, ?, ?, ?, ?)";
+        $hospedagemId = $isEstrangeiro ? 1 : 0;
+
+        $sqlQuery = "INSERT INTO utilizador (nome, email, pass, isEstrangeiro, hospedagem_id) VALUES (?, ?, ?, ?, ?)";
 
         if ($stmt = mysqli_prepare($connectionDB, $sqlQuery)) {
-            mysqli_stmt_bind_param($stmt, "sssii", $nomeParticipante, $emailParticipante, $passwordHash, $isEstrangeiro, $isOrador);        
+            mysqli_stmt_bind_param($stmt, "sssii", $nomeParticipante, $emailParticipante, $passwordHash, $isEstrangeiro, $hospedagemId);
             
             if (mysqli_stmt_execute($stmt)) {
                 header("Location: ../../pages/login.php");

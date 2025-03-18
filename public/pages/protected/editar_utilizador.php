@@ -35,7 +35,7 @@
         die("Erro: Você não tem permissão para editar este perfil.");
     }
 
-    $stmt = mysqli_prepare($connectionDB, "SELECT nome, email, isEstrangeiro, isParticipante, isOrador FROM utilizador WHERE id = ? LIMIT 1");
+    $stmt = mysqli_prepare($connectionDB, "SELECT nome, email, isEstrangeiro, isParticipante FROM utilizador WHERE id = ? LIMIT 1");
     mysqli_stmt_bind_param($stmt, 'i', $userId);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -45,7 +45,6 @@
         $userEmail = $row['email'];
         $estrangeiro = $row['isEstrangeiro'];
         $participante = $row['isParticipante'];
-        $orador = $row['isOrador'];
     } else {
         die("Erro: Usuário não encontrado.");
     }
@@ -57,7 +56,6 @@
         $password = $_POST['password'] ?? '';
         $estrangeiro = isset($_POST['estrangeiro']) ? intval($_POST['estrangeiro']) : $estrangeiro;
         $participante = isset($_POST['participante']) ? intval($_POST['participante']) : $participante;
-        $orador = isset($_POST['orador']) ? intval($_POST['orador']) : $orador;
 
         if (!empty($password)) {
             $passwordHash = password_hash($password, PASSWORD_BCRYPT);
@@ -67,8 +65,8 @@
             mysqli_stmt_close($stmt);
         }
 
-        $stmt = mysqli_prepare($connectionDB, "UPDATE utilizador SET nome = ?, email = ?, isEstrangeiro = ?, isParticipante = ?, isOrador = ? WHERE id = ?");
-        mysqli_stmt_bind_param($stmt, 'ssiiii', $name, $email, $estrangeiro, $participante, $orador, $userId);
+        $stmt = mysqli_prepare($connectionDB, "UPDATE utilizador SET nome = ?, email = ?, isEstrangeiro = ?, isParticipante = ? WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, 'ssiiii', $name, $email, $estrangeiro, $participante, $userId);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
@@ -147,13 +145,6 @@
                     <select name="participante" id="participante" class="form-input">
                         <option value="1" <?php echo $participante ? 'selected' : ''; ?>>Sim</option>
                         <option value="0" <?php echo !$participante ? 'selected' : ''; ?>>Não</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="orador">Orador</label>
-                    <select name="orador" id="orador" class="form-input">
-                        <option value="1" <?php echo $orador ? 'selected' : ''; ?>>Sim</option>
-                        <option value="0" <?php echo !$orador ? 'selected' : ''; ?>>Não</option>
                     </select>
                 </div>
                 <button type="submit" class="form-button">Atualizar Perfil</button>

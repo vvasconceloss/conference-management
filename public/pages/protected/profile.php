@@ -14,7 +14,7 @@
       exit();
   }
 
-  if ($stmt = mysqli_prepare($connectionDB, "SELECT nome, email, isEstrangeiro, isParticipante, isOrador FROM utilizador WHERE email = ? LIMIT 1")) {
+  if ($stmt = mysqli_prepare($connectionDB, "SELECT nome, email, isEstrangeiro, isParticipante FROM utilizador WHERE email = ? LIMIT 1")) {
       mysqli_stmt_bind_param($stmt, 's', $userLogin);
       mysqli_stmt_execute($stmt);
       $result = mysqli_stmt_get_result($stmt);
@@ -24,7 +24,6 @@
           $userLogin = $row['email'];
           $estrangeiro = $row['isEstrangeiro'];
           $participante = $row['isParticipante'];
-          $orador = $row['isOrador'];
       } else {
           die("Erro: Usuário não encontrado.");
       }
@@ -104,13 +103,6 @@
             <select name="participante" id="participante" class="form-input" disabled>
               <option value="1" <?php echo $participante ? 'selected' : ''; ?>>Sim</option>
               <option value="0" <?php echo !$participante ? 'selected' : ''; ?>>Não</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="orador">Orador</label>
-            <select name="orador" id="orador" class="form-input" disabled>
-              <option value="1" <?php echo $orador ? 'selected' : ''; ?>>Sim</option>
-              <option value="0" <?php echo !$orador ? 'selected' : ''; ?>>Não</option>
             </select>
           </div>
           <button type="submit" class="form-button">Atualizar Perfil</button>

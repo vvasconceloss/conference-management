@@ -1,6 +1,5 @@
 <?php
   session_start();
-
   include("../../../config/databaseConnection.php");
 
   $userLogin = $_SESSION['user_login'] ?? '';
@@ -8,67 +7,57 @@
   $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true;
   $isLoggedIn = isset($_SESSION['user_login']) || isset($_COOKIE['user_login']);
 
-  $queryUltimaConferencia = "SELECT data FROM conferencia ORDER BY data DESC LIMIT 1";
-  if ($stmt = mysqli_prepare($connectionDB, $queryUltimaConferencia)) {
-      mysqli_stmt_execute($stmt);
-      $resultUltimaConferencia = mysqli_stmt_get_result($stmt);
-      $ultimaConferencia = mysqli_fetch_assoc($resultUltimaConferencia);
-      mysqli_stmt_close($stmt);
-  } else {
-      die("Erro ao obter a última conferência.");
-  }
+  $querySemanas = "SELECT DISTINCT DATE_FORMAT(data, '%Y-%m-%d') AS semana FROM conferencia ORDER BY data ASC";
+  $resultSemanas = mysqli_query($connectionDB, $querySemanas);
+  $semanasDisponiveis = mysqli_fetch_all($resultSemanas, MYSQLI_ASSOC);
 
   $queryCategorias = "SELECT * FROM categoria";
   $resultCategorias = mysqli_query($connectionDB, $queryCategorias);
   $categorias = mysqli_fetch_all($resultCategorias, MYSQLI_ASSOC);
 
-  $semanaSelecionada = isset($_GET['semana']) ? $_GET['semana'] : ($ultimaConferencia ? $ultimaConferencia['data'] : date('Y-m-d'));
-  $categoriaSelecionada = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+  $semanaSelecionada = $_GET['semana'] ?? ($semanasDisponiveis[0]['semana'] ?? date('Y-m-d'));
+  $categoriaSelecionada = $_GET['categoria'] ?? '';
 
   $dataSelecionada = new DateTime($semanaSelecionada);
+
   $inicioSemana = clone $dataSelecionada;
   $inicioSemana->modify('Monday this week');
+
   $fimSemana = clone $inicioSemana;
   $fimSemana->modify('Sunday this week');
 
-  $query = "SELECT c.*, cat.titulo AS categoria_titulo 
+  $query = "SELECT c.*, cat.titulo AS categoria_titulo, cat.id AS categoria_id
             FROM conferencia c
             LEFT JOIN categoria_has_conferencia chc ON c.id = chc.conferencia_id
             LEFT JOIN categoria cat ON chc.categoria_id = cat.id
-            WHERE 1=1";
+            WHERE c.data BETWEEN ? AND ?";
 
   if (!empty($categoriaSelecionada)) {
-      $query .= " AND cat.id = '$categoriaSelecionada'";
+      $query .= " AND cat.id = ?";
   }
-
   $query .= " ORDER BY c.data ASC";
 
-  if ($stmt = mysqli_prepare($connectionDB, $query)) {
-      mysqli_stmt_execute($stmt);
-      $result = mysqli_stmt_get_result($stmt);
-
-      $conferenciasDaSemana = [];
-      $conferenciasPorSemana = [];
-
-      while ($row = mysqli_fetch_assoc($result)) {
-          $dataConferencia = new DateTime($row['data']);
-
-          $inicioSemanaConferencia = clone $dataConferencia;
-          $inicioSemanaConferencia->modify('Monday this week');
-          $fimSemanaConferencia = clone $inicioSemanaConferencia;
-          $fimSemanaConferencia->modify('Sunday this week');
-
-          $intervaloSemana = $inicioSemanaConferencia->format('Y-m-d') . ' a ' . $fimSemanaConferencia->format('Y-m-d');
-          $conferenciasPorSemana[$intervaloSemana][] = $row;
-
-          if ($dataConferencia >= $inicioSemana && $dataConferencia <= $fimSemana) {
-              $conferenciasDaSemana[] = $row;
-          }
-      }
-      mysqli_stmt_close($stmt);
+  $stmt = mysqli_prepare($connectionDB, $query);
+  if (!empty($categoriaSelecionada)) {
+      mysqli_stmt_bind_param($stmt, "sss", $inicioSemanaFormatted, $fimSemanaFormatted, $categoriaSelecionada);
   } else {
-      die("Erro ao obter as conferências.");
+      mysqli_stmt_bind_param($stmt, "ss", $inicioSemanaFormatted, $fimSemanaFormatted);
   }
+  $inicioSemanaFormatted = $inicioSemana->format('Y-m-d');
+  $fimSemanaFormatted = $fimSemana->format('Y-m-d');
+  
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
+
+  $conferencias = [];
+  while ($row = mysqli_fetch_assoc($result)) {
+      $conferencias[$row['id']]['info'] = $row;
+      if (!empty($row['categoria_titulo'])) {
+          $conferencias[$row['id']]['categorias'][] = $row['categoria_titulo'];
+      }
+  }
+
+  mysqli_stmt_close($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +68,7 @@
   <link rel="stylesheet" href="../../styles/global.css">
   <link rel="stylesheet" href="../../styles/css/conferencias.css">
   <script src="https://kit.fontawesome.com/15df1461d5.js" crossorigin="anonymous"></script>
-  <title>Inovatech | Conferencias</title>
+  <title>Inovatech | Conferências</title>
 </head>
 <body>
   <header class="header">
@@ -96,108 +85,88 @@
       </div>
       <div class="header-nav-buttons">
         <?php if ($isLoggedIn): ?>
-          <div class="header-nav-buttons">
-            <div class="profile-dropdown">
-              <button class="profile-button">
-                <span class="profile-initial"><?php echo strtoupper(substr($userName, 0, 1)); ?></span>
-              </button>
-              <div class="dropdown-content">
-                <a href="./profile.php" class="dropdown-link">Perfil</a>
-                <a href="../../scripts/user/logoutUser.php" class="dropdown-link">Terminar Sessão</a>
-              </div>
+          <div class="profile-dropdown">
+            <button class="profile-button">
+              <span class="profile-initial"><?php echo strtoupper(substr($userName, 0, 1)); ?></span>
+            </button>
+            <div class="dropdown-content">
+              <a href="./profile.php" class="dropdown-link">Perfil</a>
+              <a href="../../scripts/user/logoutUser.php" class="dropdown-link">Terminar Sessão</a>
             </div>
           </div>
         <?php else: ?>
-          <a href="../login.php">
-            <button id="signin">Iniciar Sessão</button>
-          </a>
-          <a href="../register.php">
-            <button id="signup">Criar Conta</button>
-          </a>
+          <a href="../login.php"><button id="signin">Iniciar Sessão</button></a>
+          <a href="../register.php"><button id="signup">Criar Conta</button></a>
         <?php endif; ?>
       </div>
     </nav>  
   </header>
   <main>
-    <h1>Conferências da Semana</h1>
-    <div class="filtro-semana">
-      <form method="GET" action="" id="filtroForm">
-        <label for="semana">Selecione a semana:</label>
-        <select name="semana" id="semana" onchange="filtrarAutomaticamente()">
-          <?php
-            foreach ($conferenciasPorSemana as $intervaloSemana => $conferencias) {
-              list($inicioSemanaOption, $fimSemanaOption) = explode(' a ', $intervaloSemana);
-              $selected = ($inicioSemanaOption == $inicioSemana->format('Y-m-d')) ? 'selected' : '';
-              echo "<option value='$inicioSemanaOption' $selected>$intervaloSemana</option>";
-            }
-          ?>
-        </select>
-      </form>
-    </div>
+    <h1>Conferências</h1>
+    <form method="GET" action="" id="filtroForm">
+      <label for="semana">Selecione a semana:</label>
+      <select name="semana" id="semana" onchange="filtrarAutomaticamente()">
+        <?php foreach ($semanasDisponiveis as $semana): ?>
+          <option value="<?php echo $semana['semana']; ?>" <?php echo ($semanaSelecionada == $semana['semana']) ? 'selected' : ''; ?>>
+            <?php echo date('d/m/Y', strtotime($semana['semana'])); ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+      <label for="categoria">Categoria:</label>
+      <select name="categoria" id="categoria" onchange="filtrarAutomaticamente()">
+        <option value="">Todas</option>
+        <?php foreach ($categorias as $cat): ?>
+          <option value="<?php echo $cat['id']; ?>" <?php echo ($categoriaSelecionada == $cat['id']) ? 'selected' : ''; ?>>
+            <?php echo $cat['titulo']; ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+    </form>
     <section class="section-button-create">
-      <div class="botoes-gerais">
-        <a href="criar_conferencia.php">
-          <button type="button" class="botao-criar">Criar Conferência</button>
-        </a>
-      </div>
+      <a href="./criar_conferencia.php">
+        <button class="botao-criar">Criar Conferência</button>
+      </a>
     </section>
     <div class="conferencias-container">
-      <?php if (!empty($conferenciasDaSemana)): ?>
-        <?php foreach ($conferenciasDaSemana as $row): ?>
-          <?php
-            $dataHora = $row['data'];
-            $dataHoraFim = $row['duracao'];
-            $dataFormatada = date('d-m-y', strtotime($dataHora));
-            $horaFormatada = date('H:i', strtotime($dataHora));
-
-            $inicio = new DateTime($dataHora);
-            $fim = new DateTime($dataHoraFim);
-            $intervalo = $inicio->diff($fim);
-            $duracaoFormatada = $intervalo->format('%hh%Imin');
-          ?>
-          <div class="conferencia-card">
-            <div class="conferencia-info">
-              <div class="conferencia-data">
-                <span class="hora"><?php echo htmlspecialchars($horaFormatada); ?></span>
-                <span class="data"><?php echo htmlspecialchars($dataFormatada); ?></span>
-              </div>
-              <div class="conferencia-duracao">
-                <span><?php echo htmlspecialchars($duracaoFormatada); ?> de duração</span>
-              </div>
+      <?php if (!empty($conferencias)): ?>
+        <?php foreach ($conferencias as $row): ?>
+          <a id="conferencia-link" href="detalhes_conferencia.php?id=<?php echo $row['info']['id']; ?>">
+            <div class="conferencia-card">
+              <div class="conferencia-info">
+                <span class="data"> <?php echo date('d-m-Y', strtotime($row['info']['data'])); ?> </span>
+                <span class="hora"> <?php echo date('H:i', strtotime($row['info']['data'])); ?> </span>
               </div>
               <div class="conferencia-detalhes">
-                <?php if (!empty($row['categoria_titulo'])): ?>
-                  <p><?php echo htmlspecialchars($row['categoria_titulo']); ?></p>
+                <?php if (!empty($row['categorias'])): ?>
+                  <p><?php echo implode(', ', $row['categorias']); ?></p>
                 <?php endif; ?>
-                <h2><?php echo htmlspecialchars($row['titulo']); ?></h2>
-                <p><?php echo htmlspecialchars($row['descricao']); ?></p>
-              </div>
-              <?php if ($isAdmin): ?>
+                <h2><?php echo htmlspecialchars($row['info']['titulo']); ?></h2>
+                <p><?php echo htmlspecialchars($row['info']['descricao']); ?></p>
                 <div class="botoes-admin">
-                  <a href="editar_conferencia.php?id=<?php echo $row['id']; ?>">
-                    <button class="botao-editar">
-                      <i class="fa-solid fa-pen"></i>
-                    </button>
+                  <a href="./editar_conferencia.php?id=<?php echo $row['info']['id']; ?>">
+                    <button><i class="fa-solid fa-pencil"></i></button>
                   </a>
-                  <a href="apagar_conferencia.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Tem certeza que deseja apagar esta conferência?');">
-                    <button class="botao-apagar">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
+                  <a href="../../scripts/user/excluirUtilizador.php?id=<?php echo $row['info']['id']; ?>" onclick="return confirmarExclusao();">
+                    <button><i class="fa-solid fa-trash"></i></button>
                   </a>
                 </div>
-              <?php endif; ?>
-          </div>
+              </div>
+            </div>
+          </a>
         <?php endforeach; ?>
       <?php else: ?>
         <p class="sem-conferencias">Nenhuma conferência encontrada para esta semana.</p>
       <?php endif; ?>
     </div>
-  </div>
   </main>
 </body>
 <script>
   function filtrarAutomaticamente() {
     document.getElementById('filtroForm').submit();
+  }
+
+  function confirmarExclusao() {
+    return confirm("Tem certeza que deseja excluir esta conferência?");
   }
 </script>
 </html>

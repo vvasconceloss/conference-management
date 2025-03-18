@@ -35,8 +35,8 @@
   }
 
   $queryCount = "SELECT COUNT(*) as total_viagens FROM utilizador 
-  LEFT JOIN viagem ON utilizador.viagem_id = viagem.id
-  LEFT JOIN deslocamento ON utilizador.id = deslocamento.utilizador_id
+  LEFT JOIN viagem ON utilizador.id = viagem.utilizador_id
+  LEFT JOIN deslocamento ON viagem.id = deslocamento.viagem_id
   WHERE deslocamento.contribuidor IS NOT NULL";
   $resultCount = mysqli_query($connectionDB, $queryCount);
   $rowCount = mysqli_fetch_assoc($resultCount);

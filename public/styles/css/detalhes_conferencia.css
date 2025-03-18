@@ -1,0 +1,67 @@
+main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: var(--red_one);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.conferencia-detalhes {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.conferencia-detalhes p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.conferencia-detalhes strong {
+  color: var(--red_two);
+}
+
+.oradores-container, .participantes-container, .recursos-container {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.oradores-container h2, .participantes-container h2, .recursos-container h2 {
+  color: var(--red_one);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.oradores-container ul, .participantes-container ul, .recursos-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.oradores-container li, .participantes-container li, .recursos-container li {
+  background-color: #f9f9f9;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  border-radius: 5px;
+  border-left: 4px solid var(--red_thr);
+  font-size: 1rem;
+  color: #333;
+}
+
+.oradores-container li:hover, .participantes-container li:hover, .recursos-container li:hover {
+  background-color: #f1f1f1;
+}
+
+.oradores-container p, .participantes-container p, .recursos-container p {
+  color: #777;
+  font-style: italic;
+}

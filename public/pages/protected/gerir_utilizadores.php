@@ -11,7 +11,7 @@
       die("Acesso negado.");
   }
 
-  $query = "SELECT id, nome, email, isEstrangeiro, isOrador FROM utilizador ORDER BY nome ASC";
+  $query = "SELECT id, nome, email, isEstrangeiro FROM utilizador ORDER BY nome ASC";
   $result = mysqli_query($connectionDB, $query);
 ?>
 
@@ -72,7 +72,6 @@
           <th>Nome</th>
           <th>Email</th>
           <th>Estrangeiro</th>
-          <th>Orador</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -83,7 +82,6 @@
             <td><?php echo htmlspecialchars($row['nome']); ?></td>
             <td><?php echo htmlspecialchars($row['email']); ?></td>
             <td><?php echo $row['isEstrangeiro'] ? 'Sim' : 'Não'; ?></td>
-            <td><?php echo $row['isOrador'] ? 'Sim' : 'Não'; ?></td>
             <td>
               <button onclick="editarUtilizador(<?php echo $row['id']; ?>)"><i class="fa-solid fa-pen"></i></button>
               <button onclick="excluirUtilizador(<?php echo $row['id']; ?>)"><i class="fa-solid fa-trash"></i></button>

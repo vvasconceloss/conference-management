@@ -11,18 +11,18 @@ h1 {
   color: var(--red_one);
 }
 
-.filtro-semana {
+#filtroForm {
   margin-bottom: 2.5rem;
 
   text-align: center;
 }
 
-.filtro-semana label {
+#filtroForm label {
   font-size: 1.2rem;
   color: var(--red_two);
 }
 
-.filtro-semana select {
+#filtroForm select {
   padding: 0.5rem;
   margin-left: 0.5rem;
 
@@ -148,8 +148,8 @@ hr { margin: 0.5rem 0; }
 .botoes-admin a { text-decoration: none; }
 
 .botoes-admin a button {
-  width: 5.0rem;
-  padding: 0.5rem;
+  width: 3.0rem;
+  padding: 0.3rem;
 
   cursor: pointer;
   color: #FFFFFF;
@@ -162,3 +162,8 @@ hr { margin: 0.5rem 0; }
 }
 
 .botoes-admin a button:hover { background-color: var(--red_two); }
+
+#conferencia-link { 
+  color: #000000;
+  text-decoration: solid;
+ }
