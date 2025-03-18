@@ -66,7 +66,7 @@
         }
 
         $stmt = mysqli_prepare($connectionDB, "UPDATE utilizador SET nome = ?, email = ?, isEstrangeiro = ?, isParticipante = ? WHERE id = ?");
-        mysqli_stmt_bind_param($stmt, 'ssiiii', $name, $email, $estrangeiro, $participante, $userId);
+        mysqli_stmt_bind_param($stmt, 'ssiii', $name, $email, $estrangeiro, $participante, $userId);        
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 

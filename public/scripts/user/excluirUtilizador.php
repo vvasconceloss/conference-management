@@ -1,49 +1,32 @@
 <?php
   session_start();
+
   include("../../../config/databaseConnection.php");
 
-  if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] !== true) {
-      header("Location: ./conferencias.php");
-      exit();
+  $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] === true;
+
+  if (!$isAdmin) {
+      die("Acesso negado.");
   }
 
-  if (isset($_GET['id'])) {
-      $id = intval($_GET['id']);
+  if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+      $id = $_GET['id'];
 
-      $queryDeleteRecursos = "DELETE FROM recurso WHERE conferencia_id = ?";
-      $stmtRecursos = mysqli_prepare($connectionDB, $queryDeleteRecursos);
-      mysqli_stmt_bind_param($stmtRecursos, "i", $id);
-      mysqli_stmt_execute($stmtRecursos);
-      mysqli_stmt_close($stmtRecursos);
+      $query = "DELETE FROM utilizador WHERE id = ?";
+      $stmt = mysqli_prepare($connectionDB, $query);
 
-      $queryDeleteUtilizadores = "DELETE FROM conferencia_has_utilizador WHERE conferencia_id = ?";
-      $stmtUtilizadores = mysqli_prepare($connectionDB, $queryDeleteUtilizadores);
-      mysqli_stmt_bind_param($stmtUtilizadores, "i", $id);
-      mysqli_stmt_execute($stmtUtilizadores);
-      mysqli_stmt_close($stmtUtilizadores);
+      mysqli_stmt_bind_param($stmt, 'i', $id);
+      $result = mysqli_stmt_execute($stmt);
 
-      $queryDeleteCategorias = "DELETE FROM categoria_has_conferencia WHERE conferencia_id = ?";
-      $stmtCategorias = mysqli_prepare($connectionDB, $queryDeleteCategorias);
-      mysqli_stmt_bind_param($stmtCategorias, "i", $id);
-      mysqli_stmt_execute($stmtCategorias);
-      mysqli_stmt_close($stmtCategorias);
-
-      $queryDelete = "DELETE FROM conferencia WHERE id = ?";
-      $stmt = mysqli_prepare($connectionDB, $queryDelete);
-      mysqli_stmt_bind_param($stmt, "i", $id);
-      mysqli_stmt_execute($stmt);
-
-      if (mysqli_stmt_affected_rows($stmt) > 0) {
-          mysqli_stmt_close($stmt);
-          header("Location: ../../pages/protected/conferencias.php?msg=Conferência+excluída+com+sucesso");
+      if ($result) {
+          header("Location: ../../pages/protected/gerir_utilizadores.php");
           exit();
       } else {
-          mysqli_stmt_close($stmt);
-          header("Location: ../../pages/protected/conferencias.php?msg=Erro+ao+excluir+conferência");
+          header("Location: ../../pages/protected/gerir_utilizadores.php");
           exit();
       }
   } else {
-      header("Location: ../../pages/protected/conferencias.php?msg=ID+inválido");
+      header("Location: ../../pages/protected/gerir_utilizadores.php");
       exit();
   }
 ?>

@@ -12,21 +12,16 @@
   }
 
   $queryViagens = "
-  SELECT utilizador.*, viagem.data AS 'data', hospedagem.nome AS 'hospedagem' FROM utilizador 
-    LEFT JOIN viagem ON utilizador.viagem_id = viagem.id
-    LEFT JOIN deslocamento ON utilizador.id = deslocamento.utilizador_id
-    LEFT JOIN hospedagem ON utilizador.hospedagem_id = hospedagem.id
-    ORDER BY utilizador.nome ASC
+  SELECT utilizador.id AS utilizador_id, utilizador.nome AS utilizador_nome, 
+         viagem.id AS viagem_id, viagem.origem, viagem.data_chegada, viagem.data_partida,
+         hospedagem.nome AS hospedagem_nome
+  FROM utilizador
+  LEFT JOIN viagem ON utilizador.id = viagem.utilizador_id
+  LEFT JOIN hospedagem ON utilizador.hospedagem_id = hospedagem.id
+  ORDER BY utilizador.nome ASC
   ";
-  $resultViagem = mysqli_query($connectionDB, $queryViagens);
 
-  $queryDeslocamentos = "
-  SELECT utilizador.*, deslocamento.data AS 'data', deslocamento.contribuidor AS 'contribuidor', deslocamento.n_deslocamentos FROM utilizador 
-    LEFT JOIN viagem ON utilizador.viagem_id = viagem.id
-    LEFT JOIN deslocamento ON utilizador.id = deslocamento.utilizador_id
-    LEFT JOIN hospedagem ON utilizador.hospedagem_id = hospedagem.id
-  ";
-  $resultDeslocamentos = mysqli_query($connectionDB, $queryDeslocamentos);
+  $resultViagem = mysqli_query($connectionDB, $queryViagens);
 ?>
 
 <!DOCTYPE html>
@@ -77,93 +72,52 @@
     </nav>  
   </header>
   <main>
-    <section>
-      <h1>Viagens</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Data</th>
-            <th>Hospedagem</th>
-            <th>Ações</th>
+  <section>
+    <h1>Viagens</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Origem</th>
+          <th>Data de Chegada</th>
+          <th>Data de Partida</th>
+          <th>Hospedagem</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php while ($row = mysqli_fetch_assoc($resultViagem)): ?>
+          <?php
+            $viagemDefinida = !empty($row['viagem_id']);
+            $classeLinha = $viagemDefinida ? '' : 'sem-viagem';
+            $hospedagem = $viagemDefinida ? htmlspecialchars($row['hospedagem_nome']) : '-----';
+          ?>
+          <tr class="<?php echo $classeLinha; ?>">
+            <td><?php echo htmlspecialchars($row['utilizador_nome']); ?></td>
+            <td><?php echo $viagemDefinida ? htmlspecialchars($row['origem']) : '-----'; ?></td>
+            <td><?php echo $viagemDefinida ? date('d-m-Y H:i', strtotime($row['data_chegada'])) : '-----'; ?></td>
+            <td><?php echo $viagemDefinida ? date('d-m-Y H:i', strtotime($row['data_partida'])) : '-----'; ?></td>
+            <td><?php echo $hospedagem; ?></td>
+            <td>
+              <?php if ($viagemDefinida): ?>
+                <a href="editar_viagem.php?id=<?php echo $row['viagem_id']; ?>">
+                  <i class="fa-solid fa-pen"></i>
+                </a>
+                <a href="remover_viagem.php?id=<?php echo $row['viagem_id']; ?>" onclick="return confirm('Tem certeza que deseja remover esta viagem?');">
+                  <i class="fa-solid fa-trash"></i>
+                </a>
+              <?php else: ?>
+                <span class="sem-viagem-acoes">
+                  <a href="editar_viagem.php?id=<?php echo $row['utilizador_id']; ?>">
+                    <i class="fa-solid fa-plane-departure"></i>
+                  </a>
+                </span>
+              <?php endif; ?>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          <?php while ($row = mysqli_fetch_assoc($resultViagem)): ?>
-            <?php
-              $viagemDefinida = !empty($row['data']);
-              $classeLinha = $viagemDefinida ? '' : 'sem-viagem';
-              $hospedagem = $viagemDefinida ? htmlspecialchars($row['hospedagem']) : '-----';
-            ?>
-            <tr class="<?php echo $classeLinha; ?>">
-              <td><?php echo htmlspecialchars($row['nome']); ?></td>
-              <td><?php echo $viagemDefinida ? date('d-m-Y H:i', strtotime($row['data'])) : '-----'; ?></td>
-              <td><?php echo $hospedagem; ?></td>
-              <td>
-                <?php if ($viagemDefinida): ?>
-                  <a href="editar_viagem.php?id=<?php echo $row['id']; ?>">
-                    <i class="fa-solid fa-pen"></i>
-                  </a>
-                  <a href="remover_viagem.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Tem certeza que deseja remover esta viagem?');">
-                    <i class="fa-solid fa-trash"></i>
-                  </a>
-                <?php else: ?>
-                  <span class="sem-viagem-acoes">
-                    <a href="editar_viagem.php?id=<?php echo $row['id']; ?>">
-                      <i class="fa-solid fa-plane-departure"></i>
-                    </a>
-                  </span>
-                <?php endif; ?>
-              </td>
-            </tr>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
-    </section>
-    <section class="deslocamentos-section">
-      <h1>Deslocamentos</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Data</th>
-            <th>Contribuidor</th>
-            <th>Nº Deslocamentos</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php while ($row = mysqli_fetch_assoc($resultDeslocamentos)): ?>
-            <?php
-              $viagemDefinida = !empty($row['data']);
-              $classeLinha = $viagemDefinida ? '' : 'sem-viagem';
-              $contribuidor = $viagemDefinida ? htmlspecialchars($row['contribuidor']) : '-----';
-            ?>
-            <tr class="<?php echo $classeLinha; ?>">
-              <td><?php echo htmlspecialchars($row['nome']); ?></td>
-              <td><?php echo $viagemDefinida ? date('d-m-Y H:i', strtotime($row['data'])) : '-----'; ?></td>
-              <td><?php echo $contribuidor; ?></td>
-              <td><?php echo htmlspecialchars($row['n_deslocamentos']) ? htmlspecialchars($row['n_deslocamentos']) : "-----"; ?></td>
-              <td>
-                <?php if ($viagemDefinida): ?>
-                  <a href="editar_viagem.php?id=<?php echo $row['id']; ?>">
-                    <i class="fa-solid fa-pen"></i>
-                  </a>
-                  <a href="remover_viagem.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Tem certeza que deseja remover esta viagem?');">
-                    <i class="fa-solid fa-trash"></i>
-                  </a>
-                <?php else: ?>
-                  <span class="sem-viagem-acoes">
-                    <a href="editar_viagem.php?id=<?php echo $row['id']; ?>">
-                      <i class="fa-solid fa-car-side"></i>
-                    </a>
-                  </span>
-                <?php endif; ?>
-              </td>
-            </tr>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
+        <?php endwhile; ?>
+      </tbody>
+    </table>
     </section>
   </main>
 </body>
