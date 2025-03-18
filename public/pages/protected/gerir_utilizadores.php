@@ -21,7 +21,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../styles/global.css">
-  <link rel="stylesheet" href="../../styles/css/utilizadores.css">
+  <link rel="stylesheet" href="../../styles/css/utilizadores.css?v=<?php echo time(); ?>">
   <title>Inovatech | Utilizadores</title>
   <script src="https://kit.fontawesome.com/15df1461d5.js" crossorigin="anonymous"></script>
 </head>
@@ -65,6 +65,11 @@
   <main>
     <h1><?php echo mysqli_num_rows($result); ?> Utilizadores</h1>
     <input type="text" id="search" placeholder="Pesquisar utilizador..." onkeyup="filtrarUtilizadores()">
+    <section class="section-button-create">
+      <a href="./criar_utilizador.php">
+        <button type="button" class="botao-criar">Adicionar Utilizador</button>
+      </a>
+    </section>
     <table>
       <thead>
         <tr>
@@ -83,7 +88,6 @@
             <td><?php echo htmlspecialchars($row['email']); ?></td>
             <td><?php echo $row['isEstrangeiro'] ? 'Sim' : 'Não'; ?></td>
             <td>
-              <button onclick="editarUtilizador(<?php echo $row['id']; ?>)"><i class="fa-solid fa-pen"></i></button>
               <button onclick="excluirUtilizador(<?php echo $row['id']; ?>)"><i class="fa-solid fa-trash"></i></button>
             </td>
           </tr>

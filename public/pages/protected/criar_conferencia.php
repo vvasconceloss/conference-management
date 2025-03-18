@@ -129,28 +129,26 @@
                 <input type="time" id="duracao" name="duracao" required>
             </div>
             <div class="form-group">
-              <label for="oradores">Oradores:</label>
-              <select id="oradores" name="oradores[]" multiple>
+                <label>Oradores:</label>
                 <?php
-                  $queryOradores = "SELECT utilizador.* FROM utilizador LEFT JOIN conferencia_has_orador chc ON chc.utilizador_id = utilizador.id";
+                  $queryOradores = "SELECT id, nome FROM utilizador";
                   $resultOradores = mysqli_query($connectionDB, $queryOradores);
                   while ($orador = mysqli_fetch_assoc($resultOradores)) {
-                    echo "<option value='{$orador['id']}'>{$orador['nome']}</option>";
+                      echo "<label><input type='checkbox' name='oradores[]' value='{$orador['id']}'> {$orador['nome']}</label><br>";
                   }
                 ?>
-              </select>
             </div>
             <div class="form-group">
               <label for="participantes">Participantes:</label>
-              <select id="participantes" name="participantes[]" multiple>
-                  <?php
+              <div class="form-group">
+                <?php
                   $queryParticipantes = "SELECT id, nome FROM utilizador WHERE isParticipante = 1";
                   $resultParticipantes = mysqli_query($connectionDB, $queryParticipantes);
                   while ($participante = mysqli_fetch_assoc($resultParticipantes)) {
-                      echo "<option value='{$participante['id']}'>{$participante['nome']}</option>";
+                      echo "<label><input type='checkbox' name='participantes[]' value='{$participante['id']}'> {$participante['nome']}</label><br>";
                   }
-                  ?>
-              </select>
+                ?>
+                </div>
             </div>
             <div class="form-group">
                 <label for="categorias">Categorias:</label>

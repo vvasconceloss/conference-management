@@ -31,6 +31,18 @@
   } else {
       die("Erro ao recuperar dados do usuário.");
   }
+
+  $viagem = [];
+  if ($stmt = mysqli_prepare($connectionDB, "SELECT * FROM viagem WHERE utilizador_id = (SELECT id FROM utilizador WHERE email = ?)")) {
+      mysqli_stmt_bind_param($stmt, 's', $userLogin);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
+      
+      if ($row = mysqli_fetch_assoc($result)) {
+          $viagem = $row;
+      }
+      mysqli_stmt_close($stmt);
+  }
 ?>
 
 <!DOCTYPE html>
@@ -128,6 +140,18 @@
               <p>Você não está inscrito em nenhuma conferência.</p>
           <?php endif; ?>
         </div>
+    </section>
+    <section class="profile-viagem">
+      <h2 class="info-title">Informações de Viagem e Deslocamento</h2>
+      <?php if (!empty($viagem)): ?>
+          <div class="viagem-info">
+              <p><strong>Origem:</strong> <?php echo htmlspecialchars($viagem['origem']); ?></p>
+              <p><strong>Data de Partida:</strong> <?php echo date('d/m/Y', strtotime($viagem['data_partida'])); ?></p>
+              <p><strong>Data de Retorno:</strong> <?php echo date('d/m/Y', strtotime($viagem['data_chegada'])); ?></p>
+          </div>
+      <?php else: ?>
+          <p>Nenhuma informação de viagem ou deslocamento encontrada.</p>
+      <?php endif; ?>
     </section>
   </main>
 </body>
